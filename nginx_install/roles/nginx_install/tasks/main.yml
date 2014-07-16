@@ -1,0 +1,3 @@
+- include: copy.yml
+- include: install.yml
+- include: delete.yml

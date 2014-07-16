@@ -1,0 +1,27 @@
+  - name: Create Nginx User In Redhat Client
+    user: name={{ nginx_user }} state=present createhome=no shell=/sbin/nologin
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Nginx  Dir
+    file: dest={{ nginx_web_dir }}/{{ item }} state=directory
+    with_items:
+      - vhost
+      - logs
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Modify Nginx Dir Permission In Redhat Client
+    file: path={{ item }} owner={{ nginx_user }} group={{ nginx_user }} mode=0755
+    with_items:
+      - "{{ nginx_web_dir }}"
+      - /usr/local/nginx-{{ nginx_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Index Html To Redhat Client
+    template: src=index.html dest={{ nginx_web_dir }}/vhost/index.html owner={{ nginx_user }} group={{ nginx_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Check Script In Redhat Client
+    template: src=index.php dest={{ nginx_web_dir }}/vhost/ owner={{ nginx_user }} group={{ nginx_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Nginx Service In Redhat Client
+    service: name=nginx state=restarted
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start Nginx Service In Redhat Client
+    shell: chkconfig --level 345 nginx on
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

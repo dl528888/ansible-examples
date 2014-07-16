@@ -1,0 +1,15 @@
+  - name: Copy Nginx Software To Redhat Client
+    copy: src=nginx-{{ nginx_version }}.tar.gz dest=/tmp/nginx-{{ nginx_version }}.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Nginx Software To Redhat Client
+    shell: tar zxf /tmp/nginx-{{ nginx_version }}.tar.gz -C /usr/local/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Nginx Start Script To Redhat Client
+    template: src=nginx dest=/etc/init.d/nginx owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Nginx Config To Redhat Client
+    template: src=nginx.conf dest=/usr/local/nginx-{{ nginx_version }}/conf/ owner=root group=root mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Nginx Vhost Config to RedHat Client
+    template: src=vhost.conf dest=/usr/local/nginx-{{ nginx_version }}/conf/vhost/ owner=root group=root mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

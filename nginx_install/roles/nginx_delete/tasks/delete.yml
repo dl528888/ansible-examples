@@ -1,0 +1,18 @@
+  - name: stop nginx service
+    shell: ps -ef|grep nginx|grep -v grep|awk '{print $2}'|xargs kill -9 >>/dev/null 2>&1
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Nginx Boot Start Script
+    shell: chkconfig --del nginx
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Nginx Dir
+    shell: rm -rf /usr/local/nginx-{{ nginx_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Nginx User
+    shell: userdel {{ nginx_user }}
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Nginx Service Start Script
+    shell: rm -rf /etc/init.d/nginx
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
