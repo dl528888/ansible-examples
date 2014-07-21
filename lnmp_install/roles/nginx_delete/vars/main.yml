@@ -1,0 +1,7 @@
+nginx_user: www
+nginx_port: 80
+nginx_web_dir: /data/webroot/nginx
+nginx_version: 1.4.3
+pcre_version: 8.33
+pretended_name: Tengine
+pretended_version: 1.5.2

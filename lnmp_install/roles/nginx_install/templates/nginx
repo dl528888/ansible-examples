@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# chkconfig: - 85 15
+# description: Nginx is a World Wide Web server.
+# processname: nginx
+nginx=/usr/local/nginx-{{ nginx_version }}/sbin/nginx
+conf=/usr/local/nginx-{{ nginx_version }}/conf/nginx.conf
+# Source function library.
+. /etc/rc.d/init.d/functions
+# Source networking configuration.
+. /etc/sysconfig/network
+function check()
+{
+if [ $? -eq 0 ];then
+    action $"Operating is:" /bin/true
+else
+    action $"Operating is:" /bin/false
+fi
+}
+case $1 in
+start)
+    echo -n "Starting Nginx "
+    $nginx -c $conf
+    check
+;;
+
+stop)
+    echo -n "Stopping Nginx "
+    killall -9 $nginx
+    check
+;;
+
+test)
+    $nginx -t -c $conf
+;;
+
+reload)
+    echo -n "Reloading Nginx "
+    ps auxww | grep nginx | grep master | awk '{print $2}' | xargs kill -HUP
+    check
+;;
+
+restart)
+    $0 stop
+    $0 start
+;;
+
+show)
+    ps aux|grep nginx
+;;
+
+*)
+    echo  "Usage: $0 {start|restart|reload|stop|test|show}"
+;;
+
+esac
+exit 0

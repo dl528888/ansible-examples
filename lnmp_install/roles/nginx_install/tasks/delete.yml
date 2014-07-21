@@ -1,0 +1,3 @@
+  - name: Delete Nginx compression Software In Redhat Client
+    shell: rm -rf /tmp/nginx-{{ nginx_version }}.tar.gz
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

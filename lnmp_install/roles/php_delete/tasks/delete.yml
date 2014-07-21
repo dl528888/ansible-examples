@@ -1,0 +1,13 @@
+  - name: Copy Delete Php Script To RedHat Client
+    template: src=delete_php.sh dest=/tmp/delete_php.sh owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Run Delete Php Script In RedHat Client
+    shell: /bin/bash /tmp/delete_php.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Php User In Redhat Client
+    user: name={{ php_user }} state=absent remove=yes
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Php Script
+    shell: rm -rf /tmp/delete_php.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
