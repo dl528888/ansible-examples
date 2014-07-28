@@ -1,0 +1,10 @@
+apr_version: 1.5.0
+apr_util_version: 1.5.3
+libiconv_version: 1.14
+apache_version: 2.4.7
+apache_web_dir: /data/webroot/apache
+apache_log: /data/webroot/apache/logs
+apache_vhost: /data/webroot/apache/vhost
+apache_port: 80
+apache_user: www
+serveradmin: denglei@chukong-inc.com

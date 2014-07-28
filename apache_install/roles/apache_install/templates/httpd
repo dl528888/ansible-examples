@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+# httpd        Startup script for the Apache HTTP Server
+#
+# chkconfig: - 85 15
+# description: The Apache HTTP Server is an efficient and extensible  #              server implementing the current HTTP standards.
+# processname: httpd
+#
+ACMD="$1"
+ARGV="$@"
+httpd_version={{ apache_version }}
+httpd_status=`ps aux|grep httpd-$httpd_version|grep -v grep|wc -l`
+httpd_pid=`ps aux|grep httpd|grep -v grep|awk 'NR==1{print $2}'`
+# Source function library.
+. /etc/rc.d/init.d/functions
+# Source networking configuration.
+. /etc/sysconfig/network
+#
+# |||||||||||||||||||| START CONFIGURATION SECTION  ||||||||||||||||||||
+# --------------------                              --------------------
+# 
+# the path to your httpd binary, including options if necessary
+HTTPD="/usr/local/httpd-$httpd_version/bin/httpd"
+#
+# pick up any necessary environment variables
+if test -f /usr/local/httpd-$httpd_version/bin/envvars; then
+  . /usr/local/httpd-$httpd_version/bin/envvars
+fi
+#
+# a command that outputs a formatted text version of the HTML at the
+# url given on the command line.  Designed for lynx, however other
+# programs may work.  
+LYNX="lynx -dump"
+#
+# the URL to your server's mod_status status page.  If you do not
+# have one, then status and fullstatus will not work.
+STATUSURL="http://localhost:80/server-status"
+#
+# Set this variable to a command that increases the maximum
+# number of file descriptors allowed per child process. This is
+# critical for configurations that use many file descriptors,
+# such as mass vhosting, or a multithreaded server.
+ULIMIT_MAX_FILES="ulimit -S -H -n 65000"
+# --------------------                              --------------------
+# ||||||||||||||||||||   END CONFIGURATION SECTION  ||||||||||||||||||||
+
+# Set the maximum number of file descriptors allowed per child process.
+if [ "x$ULIMIT_MAX_FILES" != "x" ] ; then
+    $ULIMIT_MAX_FILES
+fi
+
+ERROR=0
+if [ "x$ARGV" = "x" ] ; then 
+    ARGV="-h"
+fi
+function check()
+{
+if [ $? -eq 0 ];then
+    action $"Operating is:" /bin/true
+else
+    action $"Operating is:" /bin/false
+fi
+}
+case $ACMD in
+start|stop|restart|graceful|graceful-stop)
+    echo -n "$ARGV httpd-$httpd_version "
+    $HTTPD -k $ARGV
+    ERROR=$?
+    check
+    ;;
+startssl|sslstart|start-SSL)
+    echo The startssl option is no longer supported.
+    echo Please edit httpd.conf to include the SSL configuration settings
+    echo and then use "apachectl start".
+    ERROR=2
+    check
+    ;;
+configtest)
+    $HTTPD -t
+    ERROR=$?
+    ;;
+status)
+    if [ $httpd_status -ne 0 ];then
+	echo "Httpd-$httpd_version is running ($httpd_pid)"
+    else
+        echo "Httpd-$httpd_version is not running!"
+    fi
+    
+    ;;
+show)
+    ps aux|grep httpd-$httpd_version|grep -v grep
+    ;;
+*)
+    echo "Usage:install_lnmp.sh {start|stop|restart|graceful|graceful-stop|startssl|sslstart|start-SSL|configtest|status|show}"
+;;
+esac
+
+exit $ERROR
