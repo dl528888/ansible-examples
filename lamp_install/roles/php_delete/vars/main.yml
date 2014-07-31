@@ -1,0 +1,7 @@
+php_user: www
+php_port: 9000
+php_dir: /usr/local
+php_version: 5.3.10
+mysql_basedir: /data/mysql/basedir
+mysql_database_user: root
+mysql_passwd: 'E4yR3WnoluSFTCB'

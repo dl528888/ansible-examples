@@ -1,0 +1,12 @@
+  - name: Create Php User In Redhat Client
+    user: name={{ php_user }} state=present createhome=no shell=/sbin/nologin
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Php Script In Redhat Client
+    shell: /bin/bash /tmp/install_php.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Php Service In Redhat Client
+    shell: /etc/init.d/php-fpm start
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start Php Service In Redhat Client
+    shell: chkconfig --level 345 php-fpm on
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

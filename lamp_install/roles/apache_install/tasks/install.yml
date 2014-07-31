@@ -1,0 +1,38 @@
+  - name: Create Lib Install Dir
+    file: dest=/usr/local/lib state=directory
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Check Apache Iconv In Redhat Client
+    shell: find / -name "libiconv.so.2"|grep -Ev "tmp|soft"|wc -l
+    register: apache_iconv
+    ignore_errors: True
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Apache Iconv In Redhat Client
+    shell:  tar zxf /tmp/libiconv.tar.gz -C /usr/local/lib/
+    when:  ansible_os_family == "RedHat" and ansible_distribution_version|int >=6 and apache_iconv|int ==0
+  - name: Check Lib In Config In Redhat Client
+    shell: grep -c /usr/local/lib/ /etc/ld.so.conf
+    register: apache_lib
+    ignore_errors: True
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Apache Iconv In Redhat Client
+    shell:  echo "/usr/local/lib/">>/etc/ld.so.conf;/sbin/ldconfig
+    when:  ansible_os_family == "RedHat" and ansible_distribution_version|int >=6 and apache_lib|int ==0
+  - name: Create Apache Dir
+    file: dest={{ item }} state=directory
+    with_items:
+      - "{{ apache_web_dir }}"
+      - "{{ apache_log }}"
+      - "{{ apache_vhost }}"
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Check Script In Redhat Client
+    template: src=index.php dest={{ apache_vhost }} owner={{ apache_user }} group={{ apache_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Index Html To Redhat Client
+    template: src=index.html dest={{ apache_vhost }} owner={{ apache_user }} group={{ apache_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Apache Service In Redhat Client
+    shell: /etc/init.d/httpd start
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start Apache Service In Redhat Client
+    shell: chkconfig --level 345 httpd on
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

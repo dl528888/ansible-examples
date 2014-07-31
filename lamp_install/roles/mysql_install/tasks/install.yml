@@ -1,0 +1,21 @@
+  - name: Create Mysql Install Dir
+    file: dest=/data state=directory
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Mysql Software To Redhat Client
+    shell: tar zxf /tmp/mysql.tar.gz -C /data/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Modify Mysql Dir Permission In Redhat Client
+    file: path={{ item }} owner={{ mysql_user }} group={{ mysql_user }} mode=0755
+    with_items:
+      - "{{ mysql_datadir }}"
+      - "{{ mysql_basedir }}"
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Install Mysql Script In Redhat Client
+    shell: /bin/bash /tmp/install_mysql.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Myql Security Script In Redhat Client
+    shell: /bin/bash /tmp/mysql_security.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start Mysql Service In Redhat Client
+    shell: chkconfig --level 345 mysqld on
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

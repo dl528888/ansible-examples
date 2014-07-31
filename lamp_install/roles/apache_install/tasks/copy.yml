@@ -1,0 +1,21 @@
+  - name: Copy Apache Software To Redhat Client
+    copy: src={{ item }} dest=/tmp/ owner=root group=root
+    with_items:
+      - httpd-{{ apache_version }}.tar.gz
+      - libiconv.tar.gz
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Apache User In Redhat Client
+    user: name={{ apache_user }} state=present createhome=no shell=/sbin/nologin
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Apache Software To Redhat Client
+    shell: tar zxf /tmp/httpd-{{ apache_version }}.tar.gz -C /usr/local/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Apache Config To Redhat Client
+    template: src=httpd.conf dest=/usr/local/httpd-{{ apache_version }}/conf/httpd.conf owner={{ apache_user }} group={{ apache_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Apache Vhost Config To Redhat Client
+    template: src=vhost.conf dest=/usr/local/httpd-{{ apache_version }}/conf/vhost/vhost.conf owner={{ apache_user }} group={{ apache_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Apache Start Service Script  To Redhat Client
+    template: src=httpd dest=/etc/init.d/httpd owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

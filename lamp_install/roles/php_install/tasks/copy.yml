@@ -1,0 +1,15 @@
+  - name: Copy Php Software To Redhat Client
+    copy: src=php.tar.gz dest=/tmp/php.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Php Software To Redhat Client
+    shell: tar zxf /tmp/php.tar.gz -C /usr/local/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Php Start Script To Redhat Client
+    template: src=php-fpm dest=/etc/init.d/php-fpm owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Php Config To Redhat Client
+    template: src=php-fpm.conf dest={{ php_dir }}/php-{{ php_version }}/etc/php-fpm.conf owner=root group=root mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Php Install Script To Redhat Client
+    template: src=install_php.sh dest=/tmp/install_php.sh owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
