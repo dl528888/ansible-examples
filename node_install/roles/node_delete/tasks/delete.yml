@@ -1,0 +1,14 @@
+  - name: Stop Node Service In RedHat Client
+    shell: ps -ef|grep node|grep -v grep|awk '{print $2}'|xargs kill -9
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Redis Install Dir In RedHat Client
+    shell: rm -rf {{ node_dir}}/node-{{ node_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Node Soft Link Script
+    shell: rm -rf /usr/bin/{{ item }}
+    with_items:
+      - npm
+      - node
+      - forever
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

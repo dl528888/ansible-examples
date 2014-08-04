@@ -1,0 +1,22 @@
+  - name: Copy Node Software To Redhat Client
+    copy: src=node-{{ node_version }}.tar.gz dest=/tmp/node-{{ node_version }}.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Node Install Dir
+    file: dest={{ node_dir }} state=directory
+  - name: Uncompression Node Software To Redhat Client
+    shell: tar zxf /tmp/node-{{ node_version }}.tar.gz -C {{ node_dir }}/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Mkdir Soft Link To Redhat Client
+    shell: ln -s {{ node_dir }}/node-{{ node_version }}/bin/{{ item }} /usr/bin/{{ item }}
+    with_items:
+      - npm
+      - node
+      - forever
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Node Test Config To Redhat Client
+    template: src=app.js dest={{ node_dir }}/node-{{ node_version }}/app.js owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Node Start App In Redhat Client
+    shell: forever start {{ node_dir }}/node-{{ node_version }}/app.js
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
