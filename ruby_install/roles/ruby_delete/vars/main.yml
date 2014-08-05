@@ -1,0 +1,4 @@
+ruby_version: 1.9.3
+ruby_dir: /usr/local
+gem_version: 1.8.23
+bundle_version: 1.6.3
