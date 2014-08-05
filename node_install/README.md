@@ -1,1 +1,1 @@
-本文介绍使用ansible的playbook功能在centos或者redhat 6系列系统里安装2.4.7版本apache.
+本文介绍使用ansible的playbook功能在centos或者redhat 6系列系统里安装0.10.21版本node.
