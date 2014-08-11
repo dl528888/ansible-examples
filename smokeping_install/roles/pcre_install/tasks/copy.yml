@@ -1,0 +1,3 @@
+  - name: Copy Pcre Software To Redhat Client
+    copy: src=pcre-{{ pcre_version }}.tar.gz dest=/tmp/pcre-{{ pcre_version }}.tar.gz owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

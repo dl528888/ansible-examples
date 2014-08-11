@@ -1,0 +1,9 @@
+---
+- hosts: "{{host}}"
+  remote_user: "{{user}}"
+  gather_facts: True
+  roles:
+    - common
+    - pcre_install
+    - apache_install
+    - smokeping_install

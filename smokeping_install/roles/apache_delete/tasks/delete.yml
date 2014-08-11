@@ -1,0 +1,16 @@
+  - name: Stop Httpd Service In RedHat Client
+    shell: /etc/init.d/httpd stop
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Boot Start In RedHat Client
+    shell: chkconfig --del httpd
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Apache Dir In RedHat Client
+    shell: rm -rf /usr/local/httpd-{{ apache_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Apache Service Script In RedHat Client
+    shell: rm -rf /etc/init.d/httpd
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Apache User
+    shell: userdel {{ apache_user }}
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
