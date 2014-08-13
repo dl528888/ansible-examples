@@ -1,0 +1,33 @@
+  - name: Install Epel Yum Repo
+    shell: rpm -ivh /tmp/smokeping_install/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    ignore_errors: yes
+  - name: Install Require Software
+    shell: yum -y install perl perl-Net-Telnet perl-Net-DNS perl-LDAP perl-libwww-perl perl-RadiusPerl perl-IO-Socket-SSL perl-Socket6 perl-CGI-SpeedyCGI perl-FCGI perl-CGI-SpeedCGI perl-Time-HiRes perl-ExtUtils-MakeMaker perl-RRD-Simple rrdtool rrdtool-perl curl fping echoping   libxml2-devel libpng-devel glib pango pango-devel freetype freetype-devel fontconfig cairo cairo-devel libart_lgpl libart_lgpl-devel wqy-zenhei-fonts
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression  Smokeping 
+    shell: tar zxf /tmp/smokeping_install/smokeping.tar.gz -C /usr/local/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Smokeping Config To Redhat Client
+    template: src=config dest=/usr/local/smokeping/etc/config mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Smokeping Httpd Config To Redhat Client
+    template: src=smokeping.conf dest=/usr/local/httpd-{{ apache_version }}/conf/vhost/smokeping.conf owner={{ apache_user }} group={{ apache_user }} mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Check Boot Start In Redhat Client
+    shell: grep -c '/usr/local/smokeping/bin/smokeping --logfile=/var/log/smokeping.log 2>&1 &' /etc/rc.local
+    register: smokeping_boot
+    ignore_errors: True
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start In Redhat Client
+    shell:  echo "/usr/local/smokeping/bin/smokeping --logfile=/var/log/smokeping.log 2>&1 &" >>/etc/rc.local
+    when:  ansible_os_family == "RedHat" and ansible_distribution_version|int >=6 and smokeping_boot|int ==0
+  - name: Modify Smokeping Dir Permission In Redhat Client
+    file: path={{ smokeping_dir }} owner={{ apache_user }} group={{ apache_user }} recurse=yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Start Smokeping Service In Redhat Client
+    shell: /usr/local/smokeping/bin/smokeping --logfile=/var/log/smokeping.log 2>&1 &
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Restart Apache Service In Redhat Client
+    shell: /etc/init.d/httpd restart
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

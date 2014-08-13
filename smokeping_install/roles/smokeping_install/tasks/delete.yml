@@ -1,0 +1,3 @@
+  - name: Delete Installed File
+    shell: rm -rf /tmp/smokeping_install
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

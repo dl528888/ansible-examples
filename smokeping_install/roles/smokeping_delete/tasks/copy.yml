@@ -1,0 +1,3 @@
+  - name: Copy Zabbix Client Software To Debian Client
+    copy: src=delete_smokeping.sh dest=/tmp/delete_smokeping.sh owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

@@ -1,0 +1,1502 @@
+*** General ***
+
+owner    = Chukong 
+contact  = 244979152@qq.com
+#mailhost = 127.0.0.1
+#sendmail = /usr/sbin/sendmail
+# NOTE: do not put the Image Cache below cgi-bin
+# since all files under cgi-bin will be executed ... this is not
+# good for images.
+imgcache = {{ smokeping_dir }}/cache
+imgurl   = cache
+datadir  = {{ smokeping_dir }}/data
+piddir  = {{ smokeping_dir }}/var
+cgiurl   = http://{{ ansible_default_ipv4.address }}/smokeping.cgi
+smokemail = {{ smokeping_dir }}/etc/smokemail.dist
+tmail = {{ smokeping_dir }}/etc/tmail.dist
+# specify this to get syslog logging
+syslogfacility = local0
+# each probe is now run in its own process
+# disable this to revert to the old behaviour
+# concurrentprobes = no
+
+*** Alerts ***
+to = 244979152@qq.com
+from = smokeping@localhost.com
+
++someloss
+type = loss
+# in percent
+pattern = >1%,*12*,>3%,*12*,>5%,*12*,>6%
+comment = loss 4 times  in a row
+
+*** Database ***
+
+step     = 60
+pings    = 20
+
+# consfn mrhb steps total
+
+AVERAGE  0.5   1  1008
+AVERAGE  0.5  12  4320
+    MIN  0.5  12  4320
+    MAX  0.5  12  4320
+AVERAGE  0.5 144   720
+    MAX  0.5 144   720
+    MIN  0.5 144   720
+
+*** Presentation ***
+charset = utf-8
+template = {{ smokeping_dir }}/etc/basepage.html.dist
+
+#+ charts
+
+#menu = Charts
+#title = The most interesting destinations
+
+#++ stddev
+#sorter = StdDev(entries=>4)
+#title = Top Standard Deviation
+#menu = Std Deviation
+#format = Standard Deviation %f
+
+#++ max
+#sorter = Max(entries=>5)
+#title = Top Max Roundtrip Time
+#menu = by Max
+#format = Max Roundtrip Time %f seconds
+
+#++ loss
+#sorter = Loss(entries=>5)
+#title = Top Packet Loss
+#menu = Loss
+#format = Packets Lost %f
+
+#++ median
+#sorter = Median(entries=>5)
+#title = Top Median Roundtrip Time
+#menu = by Median
+#format = Median RTT %f seconds
+
++ overview 
+
+width = 800
+height = 80
+range = 10h
+
++ detail
+
+width = 800
+height = 220
+unison_tolerance = 2
+
+"Last 1 Hours"    1h
+"Last 3 Hours"    3h
+"Last 30 Hours"   30h
+"Last 10 Days"    10d
+"Last 400 Days"   400d
+
+#+ hierarchies
+#++ owner
+#title = Host Owner
+#++ location
+#title = Location
+
+*** Probes ***
+
++ FPing
+
+binary = /usr/sbin/fping
+
+*** Slaves ***
+secrets={{ smokeping_dir }}/etc/smokeping_secrets.dist
++Lugujifang
+display_name=Lugujifang
+#location=Lugu
+color=0000ff
+#++override
+#Probes.FPing.binary = /usr/bin/fping
+
++slave2
+display_name=another
+color=00ff00
+
+*** Targets ***
+
+probe = FPing
+
+menu = Top
+title = 欢迎来到机房smokeping网络质量监控
+#remark = 欢迎来到smokeping监控. \
+
+
+
++ Other
+menu = 其他网络监控
+title = 其他所有网络监控列表
+
+++ one-dianxin
+menu = 一线城市-电信网络监控
+title = 一线城市-电信网络监控
+host = /Other/one-dianxin/one-dianxin-hlj /Other/one-dianxin/one-dianxin-sy /Other/one-dianxin/one-dianxin-gd /Other/one-dianxin/one-dianxin-gs /Other/one-dianxin/one-dianxin-sh /Other/one-dianxin/one-dianxin-xa /Other/one-dianxin/one-dianxin-jn /Other/one-dianxin/one-dianxin-qd /Other/one-dianxin/one-dianxin-cd /Other/one-dianxin/one-dianxin-xj /Other/one-dianxin/one-dianxin-xz /Other/one-dianxin/one-dianxin-wh /Other/one-dianxin/one-dianxin-zz /Other/one-dianxin/one-dianxin-nj /Other/one-dianxin/one-dianxin-hz /Other/one-dianxin/one-dianxin-xm /Other/one-dianxin/one-dianxin-gz /Other/one-dianxin/one-dianxin-sz /Other/one-dianxin/one-dianxin-nn /Other/one-dianxin/one-dianxin-nx
+
++++ one-dianxin-hlj
+menu = 哈尔滨电信-219.150.32.132
+title = 哈尔滨电信-219.150.32.132
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.150.32.132
+
++++ one-dianxin-sy
+menu = 沈阳电信-219.148.204.66					
+title = 沈阳电信-219.148.204.66
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.148.204.66
+
++++ one-dianxin-gd
+menu = 广州电信-183.59.4.178  
+title = 广州电信-183.59.4.178  	
+#alerts = someloss
+#slaves = boomer slave2
+host = 183.59.4.178
+
++++ one-dianxin-sh
+menu = 上海电信-202.96.209.5
+title = 上海电信-202.96.209.5
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.96.209.5
+
+
++++ one-dianxin-xa
+menu = 西安电信-202.100.4.1
+title = 西安电信-202.100.4.1	
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.100.4.1
+
++++ one-dianxin-jn
+menu = 济南电信-219.146.0.253	
+title = 济南电信-219.146.0.253	
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.146.0.253
+
++++ one-dianxin-qd
+menu = 青岛电信-222.173.113.3
+title = 青岛电信-222.173.113.3
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.173.113.3
+
++++ one-dianxin-cd
+menu = 成都电信-61.139.2.69	
+title = 成都电信-61.139.2.69	
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.139.2.69
+
++++ one-dianxin-xj
+menu = 新疆电信-61.128.114.133
+title = 新疆电信-61.128.114.133
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.128.114.133
+
++++ one-dianxin-xz
+menu = 西藏电信-202.98.234.35
+title = 西藏电信-202.98.234.35
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.98.234.35
+
++++ one-dianxin-gs
+menu = 甘肃电信-202.100.64.68
+title = 甘肃电信-202.100.64.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.100.64.68
+
++++ one-dianxin-nx
+menu = 银川电信-202.100.100.1
+title = 银川电信-202.100.100.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.100.100.1
+
++++ one-dianxin-wh
+menu = 武汉电信-221.232.129.35
+title = 武汉电信-221.232.129.35
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.232.129.35
+
++++ one-dianxin-zz
+menu = 郑州电信-222.88.19.1
+title = 郑州电信-222.88.19.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.88.19.1
+
+
++++ one-dianxin-nj
+menu = 南京电信-222.190.127.1
+title = 南京电信-202.102.24.35
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.190.127.1
+
++++ one-dianxin-hz
+menu = 杭州电信-202.96.96.68
+title = 杭州电信-202.96.96.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.96.96.68
+
++++ one-dianxin-xm
+menu = 厦门电信-202.101.103.54
+title = 厦门电信-202.101.103.54
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.101.103.54
+
++++ one-dianxin-gz
+menu = 广州电信-61.140.99.11
+title = 广州电信-61.140.99.11
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.140.99.11
+
++++ one-dianxin-sz
+menu = 深圳电信-202.96.161.1
+title = 深圳电信-202.96.161.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.96.161.1
+
++++ one-dianxin-nn
+menu = 南宁电信-202.103.224.74
+title = 南宁电信-202.103.224.74
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.103.224.74 
+++ one-liantong
+
+menu = 一线城市-联通网络监控
+title = 一线城市-联通网络监控
+host = /Other/one-liantong/one-liantong-hlj /Other/one-liantong/one-liantong-gd /Other/one-liantong/one-liantong-gs /Other/one-liantong/one-liantong-sh /Other/one-liantong/one-liantong-sy /Other/one-liantong/one-liantong-xa /Other/one-liantong/one-liantong-jn /Other/one-liantong/one-liantong-qd /Other/one-liantong/one-liantong-cd /Other/one-liantong/one-liantong-xj /Other/one-liantong/one-liantong-xz /Other/one-liantong/one-liantong-wh /Other/one-liantong/one-liantong-zz /Other/one-liantong/one-liantong-nj /Other/one-liantong/one-liantong-hz /Other/one-liantong/one-liantong-xm /Other/one-liantong/one-liantong-gz /Other/one-liantong/one-liantong-sz /Other/one-liantong/one-liantong-nn /Other/one-liantong/one-liantong-yc
+
++++ one-liantong-hlj
+menu = 哈尔滨联通-218.8.251.163
+title = 哈尔滨联通-218.8.251.163
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.8.251.163
+
++++ one-liantong-gd
+menu = 广州联通-218.107.51.1
+title = 广州联通--218.107.51.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.107.51.1
+
++++ one-liantong-gs
+menu = 甘肃联通-221.7.34.1
+title = 甘肃联通-221.7.34.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.7.34.1
+
++++ one-liantong-sh
+menu = 上海联通-112.65.244.1
+title = 上海联通-112.65.244.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 112.65.244.1
+
++++ one-liantong-sy
+menu = 沈阳联通-218.25.9.38
+title = 沈阳联通-218.25.9.38
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.25.9.38
+
++++ one-liantong-xa
+menu = 西安联通-124.89.76.214
+title = 西安联通-124.89.76.214
+#alerts = someloss
+#slaves = boomer slave2
+host = 124.89.76.214
+
++++ one-liantong-jn
+menu = 济南联通-202.102.152.3
+title = 济南联通-202.102.152.3
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.102.152.3
+
++++ one-liantong-qd
+menu = 青岛联通-202.102.128.68
+title = 青岛联通-202.102.128.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.102.128.68
+
++++ one-liantong-cd
+menu = 成都联通-124.161.132.1
+title = 成都联通-124.161.132.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 124.161.132.1
+
++++ one-liantong-xj
+menu = 新疆联通-221.7.1.20
+title = 新疆联通-221.7.1.20
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.7.1.20
+
++++ one-liantong-xz
+menu = 西藏联通-27.98.234.1
+title = 西藏联通-27.98.234.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 27.98.234.1
+
++++ one-liantong-wh
+menu = 武汉联通-218.104.111.122
+title = 武汉联通-218.104.111.122
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.104.111.122
+
++++ one-liantong-zz
+menu = 郑州联通-218.28.199.1
+title = 郑州联通-218.28.199.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.28.199.1
+
+
++++ one-liantong-nj
+menu = 南京联通-221.6.4.66
+title = 南京联通-221.6.4.66
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.6.4.66
+
++++ one-liantong-hz
+menu = 杭州联通-221.12.31.58
+title = 杭州联通-221.12.31.58
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.12.31.58
+
++++ one-liantong-xm
+menu = 厦门联通-218.104.136.149
+title = 厦门联通-218.104.136.149
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.104.136.149
+
++++ one-liantong-gz
+menu = 广州联通-210.21.4.130
+title = 广州联通-210.21.4.130
+#alerts = someloss
+#slaves = boomer slave2
+host = 210.21.4.130
+
++++ one-liantong-sz
+menu = 深圳联通-210.21.196.6
+title = 深圳联通-210.21.196.6
+#alerts = someloss
+#slaves = boomer slave2
+host = 210.21.196.6
+
++++ one-liantong-nn
+menu = 南宁联通-221.7.128.68
+title = 南宁联通-221.7.128.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.7.128.68
+
++++ one-liantong-yc
+menu = 银川联通-221.199.15.5
+title = 银川联通-221.199.15.5
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.199.15.5
+
+
+++ one-yidong
+menu = 一线城市-移动网络监控
+title = 一线城市-移动网络监控
+host = /Other/one-yidong/one-yidong-hlj /Other/one-yidong/one-yidong-gd /Other/one-yidong/one-yidong-gs /Other/one-yidong/one-yidong-sh /Other/one-yidong/one-yidong-sy /Other/one-yidong/one-yidong-xa /Other/one-yidong/one-yidong-jn /Other/one-yidong/one-yidong-qd /Other/one-yidong/one-yidong-cd /Other/one-yidong/one-yidong-xj /Other/one-yidong/one-yidong-xz /Other/one-yidong/one-yidong-wh /Other/one-yidong/one-yidong-zz /Other/one-yidong/one-yidong-nj /Other/one-yidong/one-yidong-hz /Other/one-yidong/one-yidong-xm /Other/one-yidong/one-yidong-gz /Other/one-yidong/one-yidong-zh /Other/one-yidong/one-yidong-nn  /Other/one-yidong/one-yidong-yc
+
++++ one-yidong-hlj
+menu = 哈尔滨移动-211.137.241.34
+title = 哈尔滨移动-211.137.241.34
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.241.34
+
++++ one-yidong-gd
+menu = 广东移动-211.136.192.1
+title = 广东移动-211.136.192.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.136.192.1
+
++++ one-yidong-gs
+menu = 甘肃移动-218.203.160.194
+title = 甘肃移动-218.203.160.194
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.203.160.194
+
++++ one-yidong-sh
+menu = 上海移动-117.131.0.22
+title = 上海移动-117.131.0.22
+#alerts = someloss
+#slaves = boomer slave2
+host = 117.131.0.22
+
+
++++ one-yidong-sy
+menu = 沈阳移动-211.137.32.178
+title = 沈阳移动-211.137.32.178
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.32.178
+
++++ one-yidong-xa
+menu = 西安移动-117.136.25.1
+title = 西安移动-117.136.25.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 117.136.25.1
+
++++ one-yidong-jn
+menu = 济南移动-211.137.191.26
+title = 济南移动-211.137.191.26
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.191.26
+
++++ one-yidong-qd
+menu = 青岛移动-211.137.180.1
+title = 青岛移动-211.137.180.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.180.1
+
++++ one-yidong-cd
+menu = 成都移动-211.137.106.1
+title = 成都移动-211.137.106.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.106.1
+
++++ one-yidong-xj
+menu = 新疆移动-218.202.152.130
+title = 新疆移动-218.202.152.130
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.202.152.130 
+
++++ one-yidong-xz
+menu = 西藏移动-211.139.73.34
+title = 西藏移动-211.139.73.34
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.139.73.34
+
++++ one-yidong-wh
+menu = 武汉移动-223.77.0.1
+title = 武汉移动-223.77.0.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 223.77.0.1
+
++++ one-yidong-zz
+menu = 郑州移动-211.138.16.1
+title = 郑州移动-211.138.16.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.16.1
+
++++ one-yidong-nj
+menu = 南京移动-221.131.143.1
+title = 南京移动-221.131.143.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.131.143.1
+
++++ one-yidong-hz
+menu = 杭州移动-211.140.10.2
+title = 杭州移动-211.140.10.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.140.10.2
+
++++ one-yidong-xm
+menu = 厦门移动-211.143.195.255
+title = 厦门移动-211.143.195.255
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.143.195.255
+
++++ one-yidong-gz
+menu = 广州移动-183.238.55.1
+title = 广州移动-183.238.55.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 183.238.55.1
+
++++ one-yidong-zh
+menu = 珠海移动-218.204.216.65
+title = 珠海移动-218.204.216.65
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.204.216.65
+
++++ one-yidong-nn
+menu = 南宁移动-211.138.245.180
+title = 南宁移动-211.138.245.180
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.245.180
+
++++ one-yidong-yc
+menu = 银川移动-211.138.56.1
+title = 银川移动-211.138.56.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.56.1
+
+++ one-tietong
+menu = 一线城市-铁通网络监控
+title = 一线城市-铁通网络监控
+host = /Other/one-tietong/one-tietong-hlj /Other/one-tietong/one-tietong-gd /Other/one-tietong/one-tietong-gs /Other/one-tietong/one-tietong-sh /Other/one-tietong/one-tietong-sy /Other/one-tietong/one-tietong-xa /Other/one-tietong/one-tietong-jn /Other/one-tietong/one-tietong-qd /Other/one-tietong/one-tietong-cd /Other/one-tietong/one-tietong-xj /Other/one-tietong/one-tietong-cc /Other/one-tietong/one-tietong-wh /Other/one-tietong/one-tietong-zz /Other/one-tietong/one-tietong-nj /Other/one-tietong/one-tietong-hz /Other/one-tietong/one-tietong-xm /Other/one-tietong/one-tietong-gz /Other/one-tietong/one-tietong-sz /Other/one-tietong/one-tietong-nn  /Other/one-tietong/one-tietong-yc
+
++++ one-tietong-hlj
+menu = 哈尔滨铁通-61.233.167.1
+title = 哈尔滨铁通-61.233.167.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.233.167.1
+
++++ one-tietong-gd
+menu = 广东铁通-61.234.113.1
+title = 广东铁通-61.234.113.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.234.113.1
+
++++ one-tietong-gs
+menu = 甘肃铁通-211.98.224.87
+title = 甘肃铁通-211.98.224.87
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.224.87
+
++++ one-tietong-sh
+menu = 上海铁通-222.44.44.1
+title = 上海铁通-222.44.44.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.44.44.1
+
+
++++ one-tietong-sy
+menu = 沈阳铁通-222.33.8.1
+title = 沈阳铁通-222.33.8.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.33.8.1
+
++++ one-tietong-xa
+menu = 西安铁通-61.232.201.1
+title = 西安铁通-61.232.201.1 
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.201.1
+
++++ one-tietong-jn
+menu = 济南铁通-211.98.19.1
+title = 济南铁通-211.98.19.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.19.1
+
++++ one-tietong-qd
+menu = 青岛铁通-61.232.49.252
+title = 青岛铁通-61.232.49.252
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.49.252
+
++++ one-tietong-cd
+menu = 成都铁通-211.98.208.1
+title = 成都铁通-211.98.208.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.208.1
+
++++ one-tietong-xj
+menu = 新疆铁通-61.233.199.129
+title = 新疆铁通-61.233.199.129
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.233.199.129
+
++++ one-tietong-cc
+menu = 长春铁通-222.34.16.1
+title = 长春铁通-222.34.16.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.34.16.1
+
++++ one-tietong-wh
+menu = 武汉铁通-61.232.206.1
+title = 武汉铁通-61.232.206.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.206.1
+
++++ one-tietong-zz
+menu = 郑州铁通-61.233.79.1 
+title = 郑州铁通-61.233.79.1 
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.233.79.1 
+
++++ one-tietong-nj
+menu = 南京铁通-211.98.43.1
+title = 南京铁通-211.98.43.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.43.1
+
++++ one-tietong-hz
+menu = 杭州铁通-61.232.78.1
+title = 杭州铁通-61.232.78.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.78.1
+
++++ one-tietong-xm
+menu = 厦门铁通-61.232.93.193
+title = 厦门铁通-61.232.93.193
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.93.193
+
++++ one-tietong-gz
+menu = 广州铁通-211.98.161.1
+title = 广州铁通-211.98.161.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.161.1
+
++++ one-tietong-sz
+menu = 深圳铁通-61.235.99.1
+title = 深圳铁通-61.235.99.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.235.99.1
+
++++ one-tietong-nn
+menu = 南宁铁通-222.52.72.66
+title = 南宁铁通-222.52.72.66
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.52.72.66
+
++++ one-tietong-yc
+menu = 银川铁通-211.138.56.1
+title = 银川铁通-211.138.56.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.56.1
+
+
+++ two-dianxin
+menu = 二线城市-电信网络监控
+title = 二线城市-电信网络监控
+host = /Other/two-dianxin/two-dianxin-tj /Other/two-dianxin/two-dianxin-cq /Other/two-dianxin/two-dianxin-dl /Other/two-dianxin/two-dianxin-nb /Other/two-dianxin/two-dianxin-cc /Other/two-dianxin/two-dianxin-cs /Other/two-dianxin/two-dianxin-km /Other/two-dianxin/two-dianxin-lz /Other/two-dianxin/two-dianxin-sz /Other/two-dianxin/two-dianxin-wx /Other/two-dianxin/two-dianxin-nc /Other/two-dianxin/two-dianxin-gy /Other/two-dianxin/two-dianxin-hf /Other/two-dianxin/two-dianxin-ty /Other/two-dianxin/two-dianxin-sjz /Other/two-dianxin/two-dianxin-hhht /Other/two-dianxin/two-dianxin-fs /Other/two-dianxin/two-dianxin-dg /Other/two-dianxin/two-dianxin-ts /Other/two-dianxin/two-dianxin-yt /Other/two-dianxin/two-dianxin-qz /Other/two-dianxin/two-dianxin-bt
+
++++ two-dianxin-tj
+menu = 天津电信-219.150.32.132
+title = 天津电信-219.150.32.132
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.150.32.132
+
++++ two-dianxin-cq
+menu = 重庆电信-219.153.32.1
+title = 重庆电信-219.153.32.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.153.32.1
+
++++ two-dianxin-dl
+menu = 大连电信-219.149.6.99
+title = 大连电信-219.149.6.99
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.149.6.99
+
++++ two-dianxin-nb
+menu = 宁波电信-220.189.218.45 
+title = 宁波电信-220.189.218.45 
+#alerts = someloss
+#slaves = boomer slave2
+host = 220.189.218.45 
+
++++ two-dianxin-cc
+menu = 长春电信-123.172.77.1
+title = 长春电信-123.172.77.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 123.172.77.1
+
++++ two-dianxin-cs
+menu = 长沙电信-202.103.124.34
+title = 长沙电信-202.103.124.34
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.103.124.34
+
++++ two-dianxin-km
+menu = 昆明电信-222.172.200.68
+title = 昆明电信-222.172.200.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.172.200.68
+
++++ two-dianxin-lz
+menu = 兰州电信-202.100.64.68
+title = 兰州电信-202.100.64.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.100.64.68
+
++++ two-dianxin-sz
+menu = 苏州电信-222.93.201.1
+title = 苏州电信-222.93.201.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.93.201.1
+
++++ two-dianxin-wx
+menu = 无锡电信-222.191.255.1
+title = 无锡电信-222.191.255.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.191.255.1
+
++++ two-dianxin-nc
+menu = 南昌电信-202.101.224.68
+title = 南昌电信-202.101.224.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.101.224.68
+
++++ two-dianxin-gy
+menu = 贵阳电信-222.85.179.1
+title = 贵阳电信-222.85.179.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.85.179.1
+
++++ two-dianxin-hf
+menu = 合肥电信-220.178.79.2
+title = 合肥电信-220.178.79.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 220.178.79.2
+
++++ two-dianxin-ty
+menu = 太原电信-59.49.12.97
+title = 太原电信-59.49.12.97
+#alerts = someloss
+#slaves = boomer slave2
+host = 59.49.12.97
+
++++ two-dianxin-sjz
+menu = 石家庄电信-222.223.255.1
+title = 石家庄电信-222.223.255.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.223.255.1
+
++++ two-dianxin-hhht
+menu = 呼和浩特电信-219.148.172.97
+title = 呼和浩特电信-219.148.172.97
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.148.172.97
+
++++ two-dianxin-fs
+menu = 佛山电信-219.132.199.49
+title = 佛山电信-219.132.199.49
+#alerts = someloss
+#slaves = boomer slave2
+host = 219.132.199.49
+
++++ two-dianxin-dg
+menu = 东莞电信-14.120.0.1
+title = 东莞电信-14.120.0.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 14.120.0.1
+
++++ two-dianxin-ts
+menu = 唐山电信-222.223.29.5
+title = 唐山电信-222.223.29.5
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.223.29.5
+
++++ two-dianxin-yt
+menu = 烟台电信-222.173.222.1
+title = 烟台电信-222.173.222.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.173.222.1
+
++++ two-dianxin-qz
+menu = 泉州电信-202.101.107.55
+title = 泉州电信-202.101.107.55
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.101.107.55
+
++++ two-dianxin-bt
+menu = 包头电信-222.74.58.29
+title = 包头电信-222.74.58.29
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.74.58.29
+
+++ two-liantong
+menu = 二线城市-联通网络监控
+title = 二线城市-联通网络监控
+host = /Other/two-liantong/two-liantong-tj /Other/two-liantong/two-liantong-cq /Other/two-liantong/two-liantong-dl /Other/two-liantong/two-liantong-nb /Other/two-liantong/two-liantong-cc /Other/two-liantong/two-liantong-cs /Other/two-liantong/two-liantong-km /Other/two-liantong/two-liantong-lz /Other/two-liantong/two-liantong-sz /Other/two-liantong/two-liantong-wx /Other/two-liantong/two-liantong-nc /Other/two-liantong/two-liantong-gy /Other/two-liantong/two-liantong-hf /Other/two-liantong/two-liantong-ty /Other/two-liantong/two-liantong-sjz /Other/two-liantong/two-liantong-hhht /Other/two-liantong/two-liantong-fs /Other/two-liantong/two-liantong-dg /Other/two-liantong/two-liantong-ts /Other/two-liantong/two-liantong-yt /Other/two-liantong/two-liantong-qz /Other/two-liantong/two-liantong-bt
+
++++ two-liantong-tj
+menu = 天津联通-60.24.4.1
+title = 天津联通-60.24.4.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 60.24.4.1
+
++++ two-liantong-cq
+menu = 重庆联通-221.5.203.86
+title = 重庆联通-221.5.203.86
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.5.203.86
+
++++ two-liantong-dl
+menu = 大连联通-202.96.86.18
+title = 大连联通-202.96.86.18
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.96.86.18
+
++++ two-liantong-nb
+menu = 宁波联通-221.12.33.227
+title = 宁波联通-221.12.33.227
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.12.33.227
+
++++ two-liantong-cc
+menu = 长春联通-202.99.96.68
+title = 长春联通-202.99.96.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.99.96.68
+
++++ two-liantong-cs
+menu = 长沙联通-58.20.127.238
+title = 长沙联通-58.20.127.238
+#alerts = someloss
+#slaves = boomer slave2
+host = 58.20.127.238
+
++++ two-liantong-km
+menu = 昆明联通-221.3.131.11
+title = 昆明联通-221.3.131.11
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.3.131.11
+
++++ two-liantong-lz
+menu = 兰州联通-124.152.0.1
+title = 兰州联通-124.152.0.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 124.152.0.1
+
++++ two-liantong-sz
+menu = 苏州联通-221.3.131.11
+title = 苏州联通-221.3.131.11
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.3.131.11
+
++++ two-liantong-wx
+menu = 无锡联通-221.6.96.1
+title = 无锡联通-221.6.96.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.6.96.1
+
++++ two-liantong-nc
+menu = 南昌联通-220.248.192.13
+title = 南昌联通-220.248.192.13
+#alerts = someloss
+#slaves = boomer slave2
+host = 220.248.192.13
+
++++ two-liantong-gy
+menu = 贵阳联通-221.13.28.234
+title = 贵阳联通-221.13.28.234
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.13.28.234
+
++++ two-liantong-hf
+menu = 合肥联通-211.91.88.129
+title = 合肥联通-211.91.88.129
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.91.88.129
+
++++ two-liantong-ty
+menu = 太原联通-202.99.192.66
+title = 太原联通-202.99.192.66
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.99.192.66
+
++++ two-liantong-sjz
+menu = 石家庄联通-202.99.160.68
+title = 石家庄联通-202.99.160.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.99.160.68
+
++++ two-liantong-hhht
+menu = 呼和浩特联通-202.99.224.68
+title = 呼和浩特联通-202.99.224.68
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.99.224.68
+
++++ two-liantong-fs
+menu = 佛山联通-58.252.65.1
+title = 佛山联通-58.252.65.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 58.252.65.1
+
++++ two-liantong-dg
+menu = 东莞联通-221.4.141.254
+title = 东莞联通-221.4.141.254
+#alerts = someloss
+#slaves = boomer slave2
+host = 221.4.141.254
+
++++ two-liantong-ts
+menu = 唐山联通-60.2.17.49
+title = 唐山联通-60.2.17.49
+#alerts = someloss
+#slaves = boomer slave2
+host = 60.2.17.49
+
++++ two-liantong-yt
+menu = 烟台联通-202.102.154.3
+title = 烟台联通-202.102.154.3
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.102.154.3
+
++++ two-liantong-qz
+menu = 泉州联通-36.249.127.25
+title = 泉州联通-36.249.127.25
+#alerts = someloss
+#slaves = boomer slave2
+host = 36.249.127.25
+
++++ two-liantong-bt
+menu = 包头联通-202.99.224.8
+title = 包头联通-202.99.224.8
+#alerts = someloss
+#slaves = boomer slave2
+host = 202.99.224.8
+
+
+++ two-yidong
+menu = 二线城市-移动网络监控
+title = 二线城市-移动网络监控
+host = /Other/two-yidong/two-yidong-tj /Other/two-yidong/two-yidong-cq /Other/two-yidong/two-yidong-dl /Other/two-yidong/two-yidong-nb /Other/two-yidong/two-yidong-cc /Other/two-yidong/two-yidong-cs /Other/two-yidong/two-yidong-km /Other/two-yidong/two-yidong-lz /Other/two-yidong/two-yidong-sz /Other/two-yidong/two-yidong-wx /Other/two-yidong/two-yidong-nc /Other/two-yidong/two-yidong-gy /Other/two-yidong/two-yidong-hf /Other/two-yidong/two-yidong-ty /Other/two-yidong/two-yidong-sjz /Other/two-yidong/two-yidong-hhht /Other/two-yidong/two-yidong-fs /Other/two-yidong/two-yidong-dg /Other/two-yidong/two-yidong-ts /Other/two-yidong/two-yidong-yt /Other/two-yidong/two-yidong-qz /Other/two-yidong/two-yidong-bt
+
++++ two-yidong-tj
+menu = 天津移动-211.137.160.1
+title = 天津移动-211.137.160.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.137.160.1
+
++++ two-yidong-cq
+menu = 重庆移动-218.201.17.2
+title = 重庆移动-218.201.17.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.201.17.2
+
++++ two-yidong-dl
+menu = 大连移动-211.140.192.1
+title = 大连移动-211.140.192.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.140.192.1
+
++++ two-yidong-nb
+menu = 宁波移动-211.140.35.1
+title = 宁波移动-211.140.35.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.140.35.1
+
++++ two-yidong-cc
+menu = 长春移动-211.141.66.209
+title = 长春移动-211.141.66.209
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.141.66.209
+ 
++++ two-yidong-cs
+menu = 长沙移动-211.138.225.2
+title = 长沙移动-211.138.225.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.225.2
+
++++ two-yidong-km
+menu = 昆明移动-111.17.191.25
+title = 昆明移动-111.17.191.25
+#alerts = someloss
+#slaves = boomer slave2
+host = 111.17.191.25
+
++++ two-yidong-lz
+menu = 兰州移动-218.203.160.195
+title = 兰州移动-218.203.160.195
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.203.160.195
+
++++ two-yidong-sz
+menu = 苏州移动-211.103.55.51
+title = 苏州移动-211.103.55.51
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.103.55.51
+
++++ two-yidong-wx
+menu = 无锡移动-211.103.114.1
+title = 无锡移动-211.103.114.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.103.114.1
+
++++ two-yidong-nc
+menu = 南昌移动-183.217.255.254
+title = 南昌移动-183.217.255.254
+#alerts = someloss
+#slaves = boomer slave2
+host = 183.217.255.254
+
++++ two-yidong-gy
+menu = 贵阳移动-211.139.2.18
+title = 贵阳移动-211.139.2.18
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.139.2.18
+
++++ two-yidong-hf
+menu = 合肥移动-211.138.180.2
+title = 合肥移动-211.138.180.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.180.2
+
++++ two-yidong-ty
+menu = 太原移动-211.142.12.2
+title = 太原移动-211.142.12.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.142.12.2
+
++++ two-yidong-sjz
+menu = 石家庄移动-111.11.85.1
+title = 石家庄移动-111.11.85.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 111.11.85.1
+
++++ two-yidong-hhht
+menu = 呼和浩特移动-211.138.91.2
+title = 呼和浩特移动-211.138.91.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.138.91.2
+
++++ two-yidong-fs
+menu = 佛山移动-218.204.173.197
+title = 佛山移动-218.204.173.197
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.204.173.197
+
++++ two-yidong-dg
+menu = 东莞移动-183.233.223.25
+title = 东莞移动-183.233.223.25
+#alerts = someloss
+#slaves = boomer slave2
+host = 183.233.223.25
+
++++ two-yidong-ts
+menu = 沧州移动-211.143.60.1
+title = 沧州移动-211.143.60.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.143.60.1
+
++++ two-yidong-yt
+menu = 烟台移动-120.192.167.2
+title = 烟台移动-120.192.167.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 120.192.167.2
+
++++ two-yidong-qz
+menu = 泉州移动-218.207.133.3
+title = 泉州移动-218.207.133.3
+#alerts = someloss
+#slaves = boomer slave2
+host = 218.207.133.3
+
++++ two-yidong-bt
+menu = 包头移动-120.193.138.1
+title = 包头移动-120.193.138.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 120.193.138.1
+
+++ two-tietong
+menu = 二线城市-铁通网络监控
+title = 二线城市-铁通网络监控
+host = /Other/two-tietong/two-tietong-tj /Other/two-tietong/two-tietong-cq /Other/two-tietong/two-tietong-dl /Other/two-tietong/two-tietong-nb /Other/two-tietong/two-tietong-hn /Other/two-tietong/two-tietong-cs /Other/two-tietong/two-tietong-km /Other/two-tietong/two-tietong-lz /Other/two-tietong/two-tietong-sz /Other/two-tietong/two-tietong-xz /Other/two-tietong/two-tietong-nc /Other/two-tietong/two-tietong-gy /Other/two-tietong/two-tietong-hf /Other/two-tietong/two-tietong-ty /Other/two-tietong/two-tietong-sjz /Other/two-tietong/two-tietong-hhht /Other/two-tietong/two-tietong-fs /Other/two-tietong/two-tietong-zh /Other/two-tietong/two-tietong-ts /Other/two-tietong/two-tietong-yt /Other/two-tietong/two-tietong-qz /Other/two-tietong/two-tietong-bt
+
++++ two-tietong-tj
+menu = 天津铁通-61.234.70.2
+title = 天津铁通-61.234.70.2
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.234.70.2
+
++++ two-tietong-cq
+menu = 重庆铁通-211.98.114.1
+title = 重庆铁通-211.98.114.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.114.1
+
++++ two-tietong-dl
+menu = 大连铁通-61.232.157.1
+title = 大连铁通-61.232.157.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.157.1
+
++++ two-tietong-nb
+menu = 宁波铁通-61.234.186.1
+title = 宁波铁通-61.234.186.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.234.186.1
+
++++ two-tietong-hn
+menu = 海南铁通-61.235.226.1
+title = 海南铁通-61.235.226.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.235.226.1
+ 
++++ two-tietong-cs
+menu = 长沙铁通-211.98.71.1
+title = 长沙铁通-211.98.71.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.71.1
+
++++ two-tietong-km
+menu = 昆明铁通-211.98.72.7
+title = 昆明铁通-211.98.72.7
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.72.7
+
++++ two-tietong-lz
+menu = 兰州铁通-123.81.2.9
+title = 兰州铁通-123.81.2.9
+#alerts = someloss
+#slaves = boomer slave2
+host = 123.81.2.9
+
++++ two-tietong-sz
+menu = 苏州铁通-211.98.44.65
+title = 苏州铁通-211.98.44.65
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.44.65
+
++++ two-tietong-xz
+menu = 徐州铁通-222.45.86.1
+title = 徐州铁通-222.45.86.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.45.86.1
+
++++ two-tietong-nc
+menu = 南昌铁通-222.49.82.1
+title = 南昌铁通-222.49.82.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.49.82.1
+
++++ two-tietong-gy
+menu = 贵阳铁通-211.98.108.1
+title = 贵阳铁通-211.98.108.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.108.1
+
++++ two-tietong-hf
+menu = 合肥铁通-222.48.116.17
+title = 合肥铁通-222.48.116.17
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.48.116.17
+
++++ two-tietong-ty
+menu = 太原铁通-211.98.149.117
+title = 太原铁通-211.98.149.117
+#alerts = someloss
+#slaves = boomer slave2
+host = 211.98.149.117
+
++++ two-tietong-sjz
+menu = 石家庄铁通-61.235.145.1
+title = 石家庄铁通-61.235.145.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.235.145.1
+
++++ two-tietong-hhht
+menu = 呼和浩特铁通-222.39.142.1
+title = 呼和浩特铁通-222.39.142.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.39.142.1
+
++++ two-tietong-fs
+menu = 佛山铁通-110.211.253.9
+title = 佛山铁通-110.211.253.9
+#alerts = someloss
+#slaves = boomer slave2
+host = 110.211.253.9
+
++++ two-tietong-zh
+menu = 珠海铁通-222.50.104.1
+title = 珠海铁通-222.50.104.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.50.104.1
+
++++ two-tietong-ts
+menu = 唐山铁通-61.234.76.1
+title = 唐山铁通-61.234.76.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.234.76.1
+
++++ two-tietong-yt
+menu = 烟台铁通-61.232.53.113 
+title = 烟台铁通-61.232.53.113 
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.232.53.113 
+
++++ two-tietong-qz
+menu = 泉州铁通-61.234.196.185
+title = 泉州铁通-61.234.196.185
+#alerts = someloss
+#slaves = boomer slave2
+host = 61.234.196.185
+
++++ two-tietong-bt
+menu = 包头铁通-222.39.156.1
+title = 包头铁通-222.39.156.1
+#alerts = someloss
+#slaves = boomer slave2
+host = 222.39.156.1
+
+
+++ jiaoyu
+menu = 教育网络监控
+title = 教育网络监控
+host = /Other/jiaoyu/jiaoyu-qh /Other/jiaoyu/jiaoyu-sh /Other/jiaoyu/jiaoyu-wh /Other/jiaoyu/jiaoyu-hn /Other/jiaoyu/jiaoyu-dn /Other/jiaoyu/jiaoyu-tykj /Other/jiaoyu/jiaoyu-ynmz /Other/jiaoyu/jiaoyu-zgkj /Other/jiaoyu/jiaoyu-xbsf /Other/jiaoyu/jiaoyu-hgd /Other/jiaoyu/jiaoyu-tjdx  /Other/jiaoyu/jiaoyu-nxdx /Other/jiaoyu/jiaoyu-qdny /Other/jiaoyu/jiaoyu-dbdx  /Other/jiaoyu/jiaoyu-fzdx /Other/jiaoyu/jiaoyu-xnjd /Other/jiaoyu/jiaoyu-sddx /Other/jiaoyu/jiaoyu-xjzy /Other/jiaoyu/jiaoyu-xayxy 
+
+
++++ jiaoyu-qh
+menu = 清华大学-166.111.8.28
+title = 清华大学-166.111.8.28
+##alerts = someloss
+#slaves = boomer slave2
+host = 166.111.8.28
+
++++ jiaoyu-sh
+menu = 上海交大-202.112.26.34
+title = 上海交大-202.112.26.34
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.112.26.34
+
++++ jiaoyu-wh
+menu = 武汉科技大学-202.114.240.6
+title = 武汉科技大学-202.114.240.6
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.114.240.6
+
++++ jiaoyu-hn
+menu = 华南农业大学-202.116.160.33
+title = 华南农业大学-202.116.160.33
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.116.160.33
+
++++ jiaoyu-dn
+menu = 东南大学-211.65.207.170
+title = 东南大学-211.65.207.170
+##alerts = someloss
+#slaves = boomer slave2
+host = 211.65.207.170
+
++++ jiaoyu-tykj
+menu = 太原科技大学-218.26.226.100
+title = 太原科技大学-218.26.226.100
+##alerts = someloss
+#slaves = boomer slave2
+host = 218.26.226.100
+
++++ jiaoyu-ynmz
+menu = 云南民族大学-222.221.252.162
+title = 云南民族大学-222.221.252.162
+##alerts = someloss
+#slaves = boomer slave2
+host = 222.221.252.162
+
++++ jiaoyu-zgkj
+menu = 中国科技大学-202.38.64.1
+title = 中国科技大学-202.38.64.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.38.64.1
+
++++ jiaoyu-xbsf
+menu = 西北师范大学-202.201.48.1
+title = 西北师范大学-202.201.48.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.201.48.1
+
++++ jiaoyu-hgd
+menu = 哈尔滨工程大学-202.118.176.1
+title = 哈尔滨工程大学-202.118.176.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.118.176.1
+
++++ jiaoyu-tjdx
+menu = 天津大学-121.193.138.1
+title = 天津大学-121.193.138.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 121.193.138.1
+
++++ jiaoyu-nxdx
+menu = 宁夏大学-222.23.245.1
+title = 宁夏大学-222.23.245.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 222.23.245.1
+
++++ jiaoyu-qdny
+menu = 青岛农业大学-58.195.136.3
+title = 青岛农业大学-58.195.136.3
+##alerts = someloss
+#slaves = boomer slave2
+host = 58.195.136.3
+
++++ jiaoyu-dbdx
+menu = 东北大学-202.118.1.28
+title = 东北大学-202.118.1.28
+##alerts = someloss
+#slaves = boomer slave2
+host = 202.118.1.28
+
++++ jiaoyu-fzdx
+menu = 福州大学-59.77.229.1
+title = 福州大学-59.77.229.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 59.77.229.1
+
++++ jiaoyu-xnjd
+menu = 西南交大-121.48.177.1
+title = 西南交大-121.48.177.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 121.48.177.1
+
++++ jiaoyu-sddx
+menu = 山东大学-121.250.214.1
+title = 山东大学-121.250.214.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 121.250.214.1
+
+
++++ jiaoyu-xjzy
+menu = 新疆职业大学-59.75.177.1
+title = 新疆职业大学-59.75.177.1
+##alerts = someloss
+#slaves = boomer slave2
+host = 59.75.177.1
+
++++ jiaoyu-xayxy
+menu = 西安医学院-59.75.112.254
+title = 西安医学院-59.75.112.254
+##alerts = someloss
+#slaves = boomer slave2
+host = 59.75.112.254
+

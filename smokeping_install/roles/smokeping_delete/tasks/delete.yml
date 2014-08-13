@@ -1,0 +1,9 @@
+  - name: Stop Smokeping Service In Redhat Client
+    shell: ps -ef|grep FPing|grep -v grep|awk '{print $2}'|xargs kill -9 >>/dev/null
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Smokeping Dir In Redhat Client
+    shell: rm -rf {{ smokeping_dir }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Boot Start In Redhat Client
+    shell: sed -i '/smokeping*/d' /etc/rc.local
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
