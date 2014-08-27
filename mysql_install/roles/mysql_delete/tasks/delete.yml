@@ -7,7 +7,7 @@
     ignore_errors: yes
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Delete Mysql Dir And Socket
-    shell: rm -rf {{ mysql_basedir }} {{ mysql_datadir }} /tmp/mysql.sock /usr/bin/mysql /data/mysql
+    shell: rm -rf {{ mysql_basedir }} {{ mysql_datadir }} /tmp/mysql.sock /usr/bin/mysql /usr/bin/mysql_config /data/mysql
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Delete Mysql User
     shell: userdel {{ mysql_user }}

@@ -6,6 +6,9 @@ chown -R {{ mysql_user }}:{{ mysql_user }} {{ mysql_datadir }} {{ mysql_basedir 
 
 /etc/init.d/mysqld start &
 ln -s {{ mysql_basedir }}/bin/mysql /usr/bin/mysql
+ln -s {{ mysql_basedir }}/bin/mysql_config /usr/bin/mysql_config
 ln -s {{ mysql_sock }} /tmp/mysql.sock
+echo "{{ mysql_basedir }}/lib/" >>/etc/ld.so.conf
+/sbin/ldconfig
 chkconfig --add mysqld
 rm -rf /tmp/$(basename $0)

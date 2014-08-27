@@ -1,8 +1,8 @@
   - name: Create Mysql Install Dir
-    file: dest=/data state=directory
+    file: dest={{ mysql_dir }} state=directory
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Uncompression Mysql Software To Redhat Client
-    shell: tar zxf /tmp/mysql.tar.gz -C /data/
+    shell: tar zxf /tmp/mysql.tar.gz -C {{ mysql_dir }}
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Modify Mysql Dir Permission In Redhat Client
     file: path={{ item }} owner={{ mysql_user }} group={{ mysql_user }} mode=0755
