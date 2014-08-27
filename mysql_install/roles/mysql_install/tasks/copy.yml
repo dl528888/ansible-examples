@@ -1,0 +1,18 @@
+  - name: Copy Mysql Software To Redhat Client
+    copy: src=mysql.tar.gz dest=/tmp/mysql.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Mysql User In Redhat Client
+    user: name={{ mysql_user }} state=present createhome=no shell=/sbin/nologin
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6 and ansible_distribution_version|int >=6
+  - name: Copy Mysql Start Script To Redhat Client
+    template: src=mysqld dest=/etc/init.d/mysqld owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Install Mysql Script  To Redhat Client
+    template: src=install_mysql.sh dest=/tmp/ owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Mysql Config To Redhat Client
+    template: src=my.cnf dest=/tmp/ owner=root group=root mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Mysql Security Script To Redhat Client
+    template: src=mysql_security.sh dest=/tmp/ owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
