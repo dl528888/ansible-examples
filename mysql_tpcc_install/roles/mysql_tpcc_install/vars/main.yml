@@ -8,4 +8,4 @@ w: 50
 c: 50
 r: 30
 l: 300
-f: 'tpcc-mysql-result'
+f: 'tpcc-mysql'
