@@ -1,5 +1,5 @@
   - name: Delete Mysql Tpcc Database
-    shell: mysql -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }}   -e "drop database {{ tpcc_database_name }}" 
+    shell: {{ mysql_basedir }}/bin/mysql -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }}   -e "drop database {{ tpcc_database_name }}" 
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Delete Mysql Tpcc Dir
     shell: rm -rf /tmp/tpcc-mysql
