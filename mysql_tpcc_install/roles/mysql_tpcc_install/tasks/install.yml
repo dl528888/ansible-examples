@@ -1,31 +1,37 @@
   - name: Install Base Require Software In Redhat Client
     yum: name=bzr state=latest
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
-  - name: get the current time In Redhat Client
+    tags: Only_install_tpcc
+  - name: Get the current time In Redhat Client
     command: date +%Y%m%d%H%M
     register: time
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Download Tpcc Software To Redhat Client
-    shell: "cd /tmp ; bzr branch lp:~percona-dev/perconatools/tpcc-mysql"
+    shell: "cd /tmp ; rm -rf /tmp/tpcc-mysql ;bzr branch lp:~percona-dev/perconatools/tpcc-mysql"
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Compile Tpcc Software To Redhat Client
     shell: "cd /tmp/tpcc-mysql/src; make"
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Create Mysql Tpcc Database In Redhat Client
     shell: mysql -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }}  -e "{{ item }}"
     with_items:
       - create database tpcc100;
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Load  Mysql Tpcc Data Table In Redhat Client
     shell: mysql -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }} {{ tpcc_database_name }} </tmp/tpcc-mysql/{{ item }}
     with_items:
       - create_table.sql
       - add_fkey_idx.sql
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Create Tpcc Mysql Test Data To Redhat Client
     shell: /tmp/tpcc-mysql/tpcc_load {{ ansible_default_ipv4.address }} {{ tpcc_database_name }} {{ mysql_database_user }} {{ mysql_passwd }} {{ warehouse }}
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Start Mysql Tpcc Test In  Redhat Client
     shell: /tmp/tpcc-mysql/tpcc_start -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }} -d {{ tpcc_database_name }} -w {{ w }} -c {{ c }} -r {{ r }} -l {{ l }} -f {{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log > /tmp/tpcc-mysql/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
