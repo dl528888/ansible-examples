@@ -1,0 +1,3 @@
+  - name: Delete Sysbench Test Log Dir
+    shell: rm -rf {{ sysbench_log_dir }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

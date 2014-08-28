@@ -1,0 +1,9 @@
+sysbench_log_dir: /tmp/sysbench_test_log
+cpu_max_prime: 20000
+num_threads: 64
+mutex_loops: 5000
+mutex_locks: 1000000
+mutex_num: 2048
+memory_total_size: 8G
+memory_block_size: 8K
+
