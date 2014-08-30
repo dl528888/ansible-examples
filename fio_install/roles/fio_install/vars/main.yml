@@ -1,0 +1,14 @@
+fio_dir: /tmp/fio_log
+fio_version: 2.1.11
+filename: random_write_read
+direct: 1
+iodepth: 1
+rw: randrw
+rwmixread: 70
+ioengine: psync
+bs: 16K
+size: 2G
+numjobs: 30
+runtime: 1000
+name: random_read_write
+ioscheduler: noop
