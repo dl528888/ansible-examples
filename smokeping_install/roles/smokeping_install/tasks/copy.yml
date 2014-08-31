@@ -4,6 +4,5 @@
   - name: Copy Smokeping Software To Redhat Client
     copy: src={{ item }} dest=/tmp/smokeping_install/{{ item }} owner=root group=root
     with_items:
-      - rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
       - smokeping.tar.gz
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

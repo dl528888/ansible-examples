@@ -1,24 +1,11 @@
   - name: Copy Sysbench Require Software To Redhat Client
-    copy: src={{ item }} dest=/tmp/{{ item }} owner=root group=root
+    copy: src={{ item }} dest=/etc/yum.repos.d/{{ item }} owner=root group=root
     with_items:
-      - postgresql-libs-8.4.20-1.el6_5.x86_64.rpm
-      - sysbench-0.4.12-5.el6.x86_64.rpm
+      - CentOS-Base-6.repo
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Only_install_sysbench
-  - name: Install Sysbench Require Software Repo
-    shell: rpm -ivh /tmp/{{ item }}
-    with_items:
-      - postgresql-libs-8.4.20-1.el6_5.x86_64.rpm
-      - sysbench-0.4.12-5.el6.x86_64.rpm
-    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
-    ignore_errors: yes
-    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
-    tags: Only_install_sysbench
-  - name: Delete Old Software In Redhat Client
-    shell: rm -rf /tmp/{{ item }}
-    with_items:
-      - postgresql-libs-8.4.20-1.el6_5.x86_64.rpm
-      - sysbench-0.4.12-5.el6.x86_64.rpm
+  - name: Install Sysbench  Software In Redhat Client
+    yum: name=sysbench state=latest
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Only_install_sysbench
   - name: Create Sysbench Test Log Dir In Redhat Client
@@ -49,9 +36,9 @@
   - name: Copy Sysbench  Test Result from Redhat Client
     fetch: src={{ sysbench_log_dir }}/{{ item }} dest={{ sysbench_log_dir }}/{{ item }}  flat=yes
     with_items:
-      - sysbench_cputest_{{ ansible_hostname }}-{{ time.stdout }}.log
-      - sysbench_threads_{{ ansible_hostname }}-{{ time.stdout }}.log
-      - sysbench_mutexxx_{{ ansible_hostname }}-{{ time.stdout }}.log
-      - sysbench_memory_{{ ansible_hostname }}-{{ time.stdout }}.log
+      - {{ ansible_hostname }}-sysbench_cputest-{{ time.stdout }}.log
+      - {{ ansible_hostname }}-sysbench_threads-{{ time.stdout }}.log
+      - {{ ansible_hostname }}-sysbench_mutexxx-{{ time.stdout }}.log
+      - {{ ansible_hostname }}-sysbench_memory-{{ time.stdout }}.log
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest

@@ -1,9 +1,10 @@
-  - name: Install Epel Yum Repo
-    shell: rpm -ivh /tmp/smokeping_install/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+  - name: Copy Sysbench Require Software To Redhat Client
+    copy: src={{ item }} dest=/etc/yum.repos.d/{{ item }} owner=root group=root
+    with_items:
+      - CentOS-Base-6.repo
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
-    ignore_errors: yes
   - name: Install Require Software
-    shell: yum -y install perl perl-Net-Telnet perl-Net-DNS perl-LDAP perl-libwww-perl perl-RadiusPerl perl-IO-Socket-SSL perl-Socket6 perl-CGI-SpeedyCGI perl-FCGI perl-CGI-SpeedCGI perl-Time-HiRes perl-ExtUtils-MakeMaker perl-RRD-Simple rrdtool rrdtool-perl curl fping echoping   libxml2-devel libpng-devel glib pango pango-devel freetype freetype-devel fontconfig cairo cairo-devel libart_lgpl libart_lgpl-devel wqy-zenhei-fonts
+    shell: yum -y install perl perl-Net-Telnet perl-Net-DNS perl-LDAP perl-libwww-perl perl-RadiusPerl perl-IO-Socket-SSL perl-Socket6 perl-FCGI  perl-Time-HiRes perl-ExtUtils-MakeMaker perl-RRD-Simple rrdtool rrdtool-perl curl fping echoping   libxml2-devel libpng-devel glib pango pango-devel freetype freetype-devel fontconfig cairo cairo-devel libart_lgpl libart_lgpl-devel wqy-zenhei-fonts
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Uncompression  Smokeping 
     shell: tar zxf /tmp/smokeping_install/smokeping.tar.gz -C /usr/local/
