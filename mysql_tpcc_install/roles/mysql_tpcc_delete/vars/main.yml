@@ -1,3 +1,4 @@
+tpcc_dir: /tmp/tpcc_log
 mysql_database_user: root
 mysql_passwd: 'E4yR3WnoluSFTCBAI'
 mysql_port: 3306
