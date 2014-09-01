@@ -33,10 +33,10 @@
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Only_install_tpcc
   - name: Start Mysql Tpcc Test In  Redhat Client
-    shell: "export LD_LIBRARY_PATH={{ mysql_basedir }}/lib/ ;/tmp/tpcc-mysql/tpcc_start -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }} -d {{ tpcc_database_name }} -w {{ w }} -c {{ c }} -r {{ r }} -l {{ l }} -f {{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log > /tmp/tpcc-mysql/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log"
+    shell: "export LD_LIBRARY_PATH={{ mysql_basedir }}/lib/ ;/tmp/tpcc-mysql/tpcc_start -h {{ ansible_default_ipv4.address }} -u {{ mysql_database_user }} -p{{ mysql_passwd }} -d {{ tpcc_database_name }} -w {{ w }} -c {{ c }} -r {{ r }} -l {{ l }} -f {{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log > {{ tpcc_dir }}/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log"
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Copy Mysql Tpcc Result from Redhat Client
-    fetch: src=/tmp/tpcc-mysql/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log dest=/tmp/tpcc-mysql/{{ host }}-{{ f }}-{{ time.stdout }}-{{ r }}.log flat=yes
+    fetch: src={{ tpcc_dir }}/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log dest={{ tpcc_dif }}/{{ host }}-{{ f }}-{{ time.stdout }}-{{ r }}.log flat=yes
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
