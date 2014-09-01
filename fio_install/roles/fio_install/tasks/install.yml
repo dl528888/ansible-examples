@@ -41,7 +41,7 @@
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Copy Fio  Test Result from Redhat Client
-    fetch: src=/tmp/{{ ansible_hostname }}-fio-{{ time.stdout }}.log dest={{ fio_dir }}/{{ ansible_hostname }}-fio-{{ time.stdout }}.log  flat=yes
+    fetch: src=/tmp/{{ ansible_hostname }}-fio-{{ time.stdout }}.log dest={{ fio_dir }}/{{ host }}-fio-{{ time.stdout }}.log  flat=yes
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Delete Fio Test Log In Redhat Client

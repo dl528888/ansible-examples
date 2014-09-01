@@ -37,6 +37,6 @@
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Copy Mysql Tpcc Result from Redhat Client
-    fetch: src=/tmp/tpcc-mysql/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log dest=/tmp/tpcc-mysql/{{ ansible_hostname }}-{{ f }}-{{ time.stdout }}-{{ r }}.log flat=yes
+    fetch: src=/tmp/tpcc-mysql/{{ f }}_{{ ansible_hostname }}-{{ time.stdout }}-{{ r }}.log dest=/tmp/tpcc-mysql/{{ host }}-{{ f }}-{{ time.stdout }}-{{ r }}.log flat=yes
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
