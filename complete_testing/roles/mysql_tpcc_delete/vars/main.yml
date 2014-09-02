@@ -1,0 +1,11 @@
+tpcc_dir: /tmp/tpcc_log
+mysql_database_user: root
+mysql_passwd: 'E4yR3WnoluSFTCBAI'
+mysql_port: 3306
+mysql_sock: /data/mysql/datadir/mysql.sock
+tpcc_database_name: tpcc100
+w: 50
+c: 50
+r: 30
+l: 300
+f: 'tpcc-mysql-result'

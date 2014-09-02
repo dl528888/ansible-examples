@@ -1,0 +1,15 @@
+  - name: Copy Complete Test Script To Redhat Client
+    connection: local
+    template: src=complete_testing.sh dest=/tmp/complete_testing.sh owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Run Complete Test Script In Redhat Client
+    shell: /bin/bash /tmp/complete_testing.sh 
+    connection: local
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Delete Complete Test Script In Redhat Client
+    shell: rm -rf /tmp/complete_testing.sh
+    connection: local
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest

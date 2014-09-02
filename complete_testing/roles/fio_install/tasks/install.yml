@@ -1,0 +1,50 @@
+  - name: Install Fio Require Software To Redhat Client
+    yum: name=libaio-devel state=latest
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_fio
+  - name: Copy Fio Software To Redhat Client
+    copy: src={{ item }} dest=/tmp/{{ item }} owner=root group=root
+    with_items:
+      - fio-{{ fio_version }}.tar.gz
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_fio
+  - name: Uncompression Fio Software In Redhat Client
+    shell: tar zxf /tmp/fio-{{ fio_version }}.tar.gz -C /tmp/
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_fio
+  - name: Install Fio Software In Redhat Client
+    shell: "cd /tmp/fio-{{ fio_version }}; make && make install"
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_fio
+  - name: Delete Old Software In Redhat Client
+    shell: rm -rf /tmp/fio-{{ fio_version }}.tar.gz /tmp/fio-{{ fio_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_fio
+  - name: Get the current time In Redhat Client
+    command: date +%Y%m%d%H%M
+    register: time
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Copy Test Disk Script In Redhat Client
+    copy: src=check_disk.sh dest=/tmp/check_disk.sh owner=root group=root mode=0755
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Get Test Disk info In Redhat Client
+    shell: /bin/bash /tmp/check_disk.sh
+    register: test_disk
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Start Fio Random Write And Read Test In  Redhat Client
+    shell: /usr/local/bin/fio -filename={{ test_disk.stdout }}/{{ filename }} -direct={{ direct }} -iodepth {{ iodepth }} -thread -rw={{ rw }} -rwmixread={{ rwmixread }} -ioengine={{ ioengine }} -bs={{ bs }} -size={{ size }} -numjobs={{ numjobs }} -runtime={{ runtime }} -group_reporting -name={{ name }} -ioscheduler={{ ioscheduler }} --output=/tmp/{{ ansible_hostname }}-fio-{{ time.stdout }}.log
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Copy Fio  Test Result from Redhat Client
+    fetch: src=/tmp/{{ ansible_hostname }}-fio-{{ time.stdout }}.log dest={{ fio_dir }}/{{ host }}-fio-{{ time.stdout }}.log  flat=yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
+  - name: Delete Fio Test Log In Redhat Client
+    shell: rm -rf {{ test_disk.stdout }}/{{ filename }} /tmp/{{ ansible_hostname }}-fio-{{ time.stdout }}.log /tmp/check_disk.sh
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Onlytest
