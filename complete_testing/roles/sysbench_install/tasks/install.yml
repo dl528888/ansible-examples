@@ -9,7 +9,7 @@
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Only_install_sysbench
   - name: Create Sysbench Test Log Dir In Redhat Client
-    file: dest={{ sysbench_log_dir }} state=directory
+    file: dest={{ sysbench_dir }} state=directory
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Get the current time In Redhat Client
@@ -18,23 +18,23 @@
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Start Sysbench Cpu Test In  Redhat Client
-    shell: /usr/bin/sysbench --test=cpu --num-threads=`grep "processor" /proc/cpuinfo | wc -l` --cpu-max-prime={{ cpu_max_prime }}  run > {{ sysbench_log_dir }}/sysbench_cputest_{{ ansible_hostname }}-{{ time.stdout }}.log 
+    shell: /usr/bin/sysbench --test=cpu --num-threads=`grep "processor" /proc/cpuinfo | wc -l` --cpu-max-prime={{ cpu_max_prime }}  run > {{ sysbench_dir }}/sysbench_cputest_{{ ansible_hostname }}-{{ time.stdout }}.log 
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Start Sysbench Threads Test In  Redhat Client
-    shell: /usr/bin/sysbench --test=threads --num-threads={{ num_threads }} run  > {{ sysbench_log_dir }}/sysbench_threads_{{ ansible_hostname }}-{{ time.stdout }}.log
+    shell: /usr/bin/sysbench --test=threads --num-threads={{ num_threads }} run  > {{ sysbench_dir }}/sysbench_threads_{{ ansible_hostname }}-{{ time.stdout }}.log
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Start Sysbench Mutex Test In  Redhat Client
-    shell: /usr/bin/sysbench --test=mutex --num-threads={{ num_threads }} --mutex-num={{ mutex_num }} --mutex-locks={{ mutex_locks }} --mutex-loops={{ mutex_loops }} run > {{ sysbench_log_dir }}/sysbench_mutexxx_{{ ansible_hostname }}-{{ time.stdout }}.log
+    shell: /usr/bin/sysbench --test=mutex --num-threads={{ num_threads }} --mutex-num={{ mutex_num }} --mutex-locks={{ mutex_locks }} --mutex-loops={{ mutex_loops }} run > {{ sysbench_dir }}/sysbench_mutexxx_{{ ansible_hostname }}-{{ time.stdout }}.log
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Start Sysbench Memory  Test In  Redhat Client
-    shell: /usr/bin/sysbench --test=memory --memory-block-size={{ memory_block_size }} --memory-total-size={{ memory_total_size }}  --num-threads={{ num_threads }} run > {{ sysbench_log_dir }}/sysbench_memory_{{ ansible_hostname }}-{{ time.stdout }}.log 
+    shell: /usr/bin/sysbench --test=memory --memory-block-size={{ memory_block_size }} --memory-total-size={{ memory_total_size }}  --num-threads={{ num_threads }} run > {{ sysbench_dir }}/sysbench_memory_{{ ansible_hostname }}-{{ time.stdout }}.log 
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Onlytest
   - name: Copy Sysbench  Test Result from Redhat Client
-    fetch: src={{ sysbench_log_dir }}/{{ item }}_{{ ansible_hostname }}-{{ time.stdout }}.log dest={{ sysbench_log_dir }}/{{ host }}-{{ item }}-{{ time.stdout }}.log  flat=yes
+    fetch: src={{ sysbench_dir }}/{{ item }}_{{ ansible_hostname }}-{{ time.stdout }}.log dest={{ sysbench_dir }}/{{ host }}-{{ item }}-{{ time.stdout }}.log  flat=yes
     with_items:
       - sysbench_cputest
       - sysbench_threads
