@@ -28,6 +28,10 @@
       - add_fkey_idx.sql
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
     tags: Only_install_tpcc
+  - name: Create Test Result Dir In Redhat Client
+    file: dest={{ tpcc_dir }} state=directory
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+    tags: Only_install_tpcc
   - name: Create Tpcc Mysql Test Data To Redhat Client
     shell: /tmp/tpcc-mysql/tpcc_load {{ ansible_default_ipv4.address }} {{ tpcc_database_name }} {{ mysql_database_user }} {{ mysql_passwd }} {{ warehouse }}
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
