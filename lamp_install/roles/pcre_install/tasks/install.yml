@@ -1,0 +1,3 @@
+  - name: Uncompression Pcre Software In Redhat Client
+    shell: tar zxf /tmp/pcre-{{ pcre_version }}.tar.gz -C /usr/local/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

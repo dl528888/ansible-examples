@@ -1,0 +1,3 @@
+  - name: Delete Pcre
+    shell: rm -rf /usr/local/pcre-{{ pcre_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
