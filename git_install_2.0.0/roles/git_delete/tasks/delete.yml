@@ -1,0 +1,27 @@
+  - name: Delete Git Install Dir In RedHat Client
+    shell: rm -rf {{ git_dir}}/git-{{ git_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Git Soft Link Script
+    shell: rm -rf /usr/bin/{{ item }}
+    with_items:
+      - git
+      - git-cvsserver
+      - gitk
+      - git-receive-pack
+      - git-shell
+      - git-upload-archive
+      - git-upload-pack
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Recovery Old Git Soft Link Script
+    shell: mv -f  /usr/bin/{{ item }}_back /usr/bin/{{ item }}
+    with_items:
+      - git
+      - git-cvsserver
+      - gitk
+      - git-receive-pack
+      - git-shell
+      - git-upload-archive
+      - git-upload-pack
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

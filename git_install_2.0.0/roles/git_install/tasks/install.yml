@@ -1,0 +1,28 @@
+  - name: Copy Git Software To Redhat Client
+    copy: src=git-{{ git_version }}.tar.gz dest=/tmp/git-{{ git_version }}.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Git Software To Redhat Client
+    shell: tar zxf /tmp/git-{{ git_version }}.tar.gz -C {{ git_dir }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Git Software Variable In Redhat Client
+    shell: cp -a -f /usr/bin/{{ item }} /usr/bin/{{ item }}_back
+    with_items:
+      - git
+      - git-cvsserver
+      - gitk
+      - git-receive-pack
+      - git-shell
+      - git-upload-archive
+      - git-upload-pack
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Git Variable To Redhat Client
+    shell: ln -s -f {{ git_dir }}/git-{{ git_version }}/bin/{{ item }} /usr/bin/{{ item }}
+    with_items:
+      - git
+      - git-cvsserver
+      - gitk
+      - git-receive-pack
+      - git-shell
+      - git-upload-archive
+      - git-upload-pack
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
