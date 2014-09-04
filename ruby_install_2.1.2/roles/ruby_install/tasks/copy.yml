@@ -5,14 +5,14 @@
     shell: tar zxf /tmp/ruby-{{ ruby_version }}.tar.gz -C {{ ruby_dir }}
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Delete Ruby Software Variable In Redhat Client
-    shell: rm -rf /usr/bin/{{ item }}
+    shell: cp -a -f /usr/bin/{{ item }} /usr/bin/{{ item }}_back
     with_items:
       - ruby
       - gem
       - bundle
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Copy Redis Config To Redhat Client
-    shell: ln -s {{ ruby_dir }}/ruby-{{ ruby_version }}/bin/{{ item }} /usr/bin/{{ item }}
+    shell: ln -s -f {{ ruby_dir }}/ruby-{{ ruby_version }}/bin/{{ item }} /usr/bin/{{ item }}
     with_items:
       - ruby
       - gem

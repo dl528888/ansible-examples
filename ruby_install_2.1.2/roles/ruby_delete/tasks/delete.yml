@@ -1,7 +1,3 @@
-  - name: Stop Ruby Service In RedHat Client
-    shell: ps -ef|grep ruby|grep -v grep|awk '{print $2}'|xargs kill -9 >>/dev/null
-    ignore_errors: yes
-    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Delete Ruby Install Dir In RedHat Client
     shell: rm -rf {{ ruby_dir}}/ruby-{{ ruby_version }}
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
@@ -11,4 +7,13 @@
       - ruby
       - gem
       - bundle
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Recovery Old Ruby Soft Link Script
+    shell: mv -f /usr/bin/{{ item }}_back /usr/bin/{{ item }}
+    with_items:
+      - ruby
+      - gem
+      - bundle
+    ignore_errors: yes
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
