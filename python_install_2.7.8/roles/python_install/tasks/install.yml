@@ -1,0 +1,24 @@
+  - name: Copy Python Software To Redhat Client
+    copy: src=python-{{ python_version }}.tar.gz dest=/tmp/python-{{ python_version }}.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Uncompression Python Software To Redhat Client
+    shell: tar zxf /tmp/python-{{ python_version }}.tar.gz -C {{ python_dir }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Python Software Variable In Redhat Client
+    shell: cp -a -f /usr/bin/{{ item }} /usr/bin/{{ item }}_back
+    with_items:
+      - python
+      - easy_install
+      - pip
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Python Variables To Redhat Client
+    shell: ln -s -f {{ python_dir }}/python-{{ python_version }}/bin/{{ item }} /usr/bin/{{ item }}
+    with_items:
+      - python
+      - easy_install
+      - pip
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Modify Yum Variables To Redhat Client
+    shell: sed -i 's@#!/usr/bin/python.*@#!/usr/bin/python{{ ansible_python_version[:-2] }}@' /usr/bin/yum
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
