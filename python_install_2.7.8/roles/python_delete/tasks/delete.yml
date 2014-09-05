@@ -1,5 +1,5 @@
   - name: Delete Python Install Dir In RedHat Client
-    shell: rm -rf {{ python_dir}}/ruby-{{ python_version }}
+    shell: rm -rf {{ python_dir}}/ruby-{{ python_version }} /etc/profile.d/python-{{ python_version }}.sh
     when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
   - name: Recovery Old Python Soft Link Script
     shell: mv -f /usr/bin/{{ item }}_back /usr/bin/{{ item }}
