@@ -1,0 +1,15 @@
+mysql_dir: /data/
+mysql_basedir: /data/mysql/basedir
+mysql_datadir: /data/mysql/datadir
+mysql_user: mysql
+mysql_database_user: root
+mysql_passwd: 'E4yR3WnoluSFTCBAI'
+mysql_master_user: root
+mysql_master_passwd: 'E4yR3WnoluSFTCBAI'
+mysql_slave_user: mysql_sync
+mysql_slave_passwd: '#2FyR3FTCKSIWnol$d'
+mysql_port: 3306
+mysql_sock: /data/mysql/datadir/mysql.sock
+mysql_charset: utf8
+mysql_collation: utf8_general_ci
+mysql_version: Percona-Server-5.5.21-rel25.1.tar.gz
