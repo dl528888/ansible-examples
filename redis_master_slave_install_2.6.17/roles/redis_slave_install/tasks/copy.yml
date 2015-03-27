@@ -1,0 +1,11 @@
+  - name: Copy Redis Software To Redhat Client
+    copy: src=redis-{{ redis_version }}.tar.gz dest=/tmp/redis-{{ redis_version }}.tar.gz owner=root group=root
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Create Redis Install Dir
+    file: dest={{ redis_dir }} state=directory
+  - name: Uncompression Redis Software To Redhat Client
+    shell: tar zxf /tmp/redis-{{ redis_version }}.tar.gz -C /data/
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Copy Redis Config To Redhat Client
+    template: src=redis.conf dest={{ redis_conf_dir }}/redis_{{ redis_port }}.conf owner=root group=root mode=0644
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

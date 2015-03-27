@@ -1,0 +1,17 @@
+  - name: Create Soft Link In Redhat Client
+    shell: ln -s {{ redis_dir }}/redis-{{ redis_version }}/redis-server/src/{{ item }} /usr/bin/{{ item }}
+    with_items:
+      - redis-cli
+      - redis-server
+    ignore_errors: True
+  - name: Check Boot Start In Redhat Client
+    shell: grep -c '/usr/bin/redis-server {{ redis_conf_dir }}/redis_{{ redis_port }}.conf' /etc/rc.local
+    register: redis_boot
+    ignore_errors: True
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Add Boot Start In Redhat Client
+    shell:  echo "/usr/bin/redis-server {{ redis_conf_dir }}/redis_{{ redis_port }}.conf" >>/etc/rc.local
+    when:  ansible_os_family == "RedHat" and ansible_distribution_version|int >=6 and redis_boot|int ==0
+  - name: Start Redis Service In Redhat Client
+    shell: /usr/bin/redis-server {{ redis_conf_dir }}/redis_{{ redis_port }}.conf
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

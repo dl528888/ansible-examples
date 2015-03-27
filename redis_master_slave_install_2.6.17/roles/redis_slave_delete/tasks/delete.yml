@@ -1,0 +1,15 @@
+  - name: Stop Redis Service In Redhat Client
+    shell: /usr/bin/redis-cli -h {{ ansible_default_ipv4.address }} -p {{ redis_port }} shutdown
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Redis Soft Line In Redhat Client
+    shell: rm -rf /usr/bin/{{ item }}
+    with_items:
+      - redis-cli
+      - redis-server
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Redis Dir In Redhat Client
+    shell: rm -rf {{ redis_dir }}/redis-{{ redis_version }}
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6
+  - name: Delete Boot Start In Redhat Client
+    shell: sed -i '/{{ redis_port }}*/d' /etc/rc.local
+    when: ansible_os_family == "RedHat" and ansible_distribution_version|int >=6

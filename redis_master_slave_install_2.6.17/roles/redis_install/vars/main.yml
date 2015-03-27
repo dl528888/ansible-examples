@@ -1,0 +1,6 @@
+redis_dir: /data
+redis_version: 2.6.17
+redis_port: 6379
+redis_conf_dir: /data/redis-2.6.17/conf
+redis_db_dir: /data/redis-2.6.17/db
+redis_log_dir: /data/redis-2.6.17/log

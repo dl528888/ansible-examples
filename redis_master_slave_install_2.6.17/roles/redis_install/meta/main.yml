@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Deng Lei
+  description: Install Redis
+  license: MIT
+  min_ansible_version: 1.6
+  platforms:
+  - name: CentOS
+    versions:
+    - 6
+  categories:
+  - Service
+dependencies: []
